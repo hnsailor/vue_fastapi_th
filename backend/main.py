@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title="查寝",
+    description="查寝系统",
+)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+def init_db():
+    from db.database import Base, engine
+    from models.models_users import User
+    Base.metadata.create_all(bind=engine)
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+init_db()
