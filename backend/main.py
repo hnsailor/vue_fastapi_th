@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 
-from api.endpoints import router_user
+from api.api import api_router
 
 app = FastAPI(
     title="查寝",
     description="查寝系统",
 )
 
-app.include_router(router_user.router_user, tags=["user"])
+app.include_router(api_router)
 
 
 def init_db():
