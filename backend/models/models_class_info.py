@@ -39,6 +39,7 @@ class Dorm(Base):
     DormName = Column(String, nullable=False)
     ClassID = Column(Integer, ForeignKey('ClassTable.ClassID'))
 
+    sanitations = relationship("Sanitation", back_populates="dorm")
     class_ = relationship('Classes', back_populates='dorms')
 
 

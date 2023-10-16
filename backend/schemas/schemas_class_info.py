@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class GradeCreate(BaseModel):
@@ -15,3 +16,7 @@ class ClassCreate(BaseModel):
 
 class DormCreate(BaseModel):
     DormName: str
+
+
+class ClassInfoIn(BaseModel):
+    info: List[str]

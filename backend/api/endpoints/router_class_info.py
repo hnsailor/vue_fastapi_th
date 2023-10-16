@@ -1,27 +1,30 @@
+# 在api/endpoints/router_class_info.py中添加或修改以下代码
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas.schemas_class_info import GradeCreate, MajorCreate, ClassCreate, DormCreate
+from schemas.schemas_class_info import GradeCreate, MajorCreate, ClassCreate, DormCreate, ClassInfoIn
 from db.database import get_db
 from crud.crud_class_info import create_grade, create_major, create_class, create_dorm
 
 router_class_info = APIRouter()
 
 
-@router_class_info.post("/create_grade", response_model=GradeCreate)
-def create_grade_api(grade: GradeCreate, db: Session = Depends(get_db)):
-    return create_grade(db, grade_name=grade.GradeName)
+@router_class_info.post("/create_info")
+def create_info_api(input_data: ClassInfoIn, db: Session = Depends(get_db)):
+    results = []
+    for info in input_data.info:
+        grade_name, major_name, class_name, dorm_name = info.split()
 
+        grade = create_grade(db, grade_name=grade_name)
+        major = create_major(db, major_name=major_name, grade_id=grade.GradeID)
+        class_ = create_class(db, class_name=class_name, major_id=major.MajorID)
+        dorm = create_dorm(db, dorm_name=dorm_name, class_id=class_.ClassID)
 
-@router_class_info.post("/create_major", response_model=MajorCreate)
-def create_major_api(major: MajorCreate, db: Session = Depends(get_db)):
-    return create_major(db, major_name=major.MajorName, grade_id=major.GradeID)
+        results.append({
+            "grade": grade.GradeName,
+            "major": major.MajorName,
+            "class": class_.ClassName,
+            "dorm": dorm.DormName
+        })
 
-
-@router_class_info.post("/create_class", response_model=ClassCreate)
-def create_class_api(class_: ClassCreate, db: Session = Depends(get_db)):
-    return create_class(db, class_name=class_.ClassName, major_id=class_.MajorID)
-
-
-@router_class_info.post("/create_dorm", response_model=DormCreate)
-def create_dorm_api(dorm: DormCreate, db: Session = Depends(get_db)):
-    return create_dorm(db, dorm_name=dorm.DormName, class_id=dorm.ClassID)
+    return results
