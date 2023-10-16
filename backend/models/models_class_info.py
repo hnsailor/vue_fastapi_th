@@ -43,5 +43,5 @@ class Dorm(Base):
 
 
 Grade.majors = relationship('Major', order_by=Major.MajorID, back_populates='grade')
-Major.classes = relationship('Class', order_by=Classes.ClassID, back_populates='major')
+Major.classes = relationship('Classes', order_by=Classes.ClassID, back_populates='major')
 Classes.dorms = relationship('Dorm', order_by=Dorm.DormID, back_populates='class_')

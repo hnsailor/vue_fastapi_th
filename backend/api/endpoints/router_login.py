@@ -12,7 +12,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 router_login = APIRouter()
 
 
-@router_login.post("/token")
+@router_login.post("/get_token")
 def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = db.query(User).filter(User.username == form_data.username).first()
     if not user:

@@ -7,7 +7,7 @@ from crud.crud_user import create_user
 router_user = APIRouter()
 
 
-@router_user.post("/user", response_model=User)
+@router_user.post("/create_user", response_model=User)
 def create_user_api(user: UserCreate, db: Session = Depends(get_db)):
     db_user = create_user(db, username=user.username, password=user.password)
     if not db_user:
