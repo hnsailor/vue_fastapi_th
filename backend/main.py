@@ -13,6 +13,8 @@ app.include_router(api_router)
 def init_db():
     from db.database import Base, engine
     from models.models_users import User
+    from models.models_sanitation import Sanitation
+    from models.models_class_info import Grade, Major, Classes, Dorm
     Base.metadata.create_all(bind=engine)
 
 
