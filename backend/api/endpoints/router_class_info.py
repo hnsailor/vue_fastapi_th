@@ -2,9 +2,9 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas.schemas_class_info import GradeCreate, MajorCreate, ClassCreate, DormCreate, ClassInfoIn
+from schemas.schemas_class_info import GradeCreate, MajorCreate, ClassCreate, DormCreate, ClassInfoIn, SanitationCreate
 from db.database import get_db
-from crud.crud_class_info import create_grade, create_major, create_class, create_dorm
+from crud.crud_class_info import create_grade, create_major, create_class, create_dorm, create_sanitation
 
 router_class_info = APIRouter()
 
@@ -28,3 +28,8 @@ def create_info_api(input_data: ClassInfoIn, db: Session = Depends(get_db)):
         })
 
     return results
+
+
+@router_class_info.post("/create_sanitation", response_model=SanitationCreate)
+def create_sanitation_api(sanitation: SanitationCreate, db: Session = Depends(get_db)):
+    return create_sanitation(db, sanitation_data=sanitation)

@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 from models.models_class_info import Grade, Major, Classes, Dorm
+from models.models_sanitation import Sanitation
+from schemas.schemas_class_info import SanitationCreate
 
 
 def create_grade(db: Session, grade_name: str) -> Grade:
@@ -32,3 +34,12 @@ def create_dorm(db: Session, dorm_name: str, class_id: int) -> Dorm:
     db.commit()
     db.refresh(dorm)
     return dorm
+
+
+def create_sanitation(db: Session, sanitation_data: SanitationCreate) -> Sanitation:
+    sanitation = Sanitation(**sanitation_data.model_dump())
+    db.add(sanitation)
+    db.commit()
+    db.refresh(sanitation)
+    return sanitation
+

@@ -20,3 +20,10 @@ class DormCreate(BaseModel):
 
 class ClassInfoIn(BaseModel):
     info: List[str]
+
+
+class SanitationCreate(BaseModel):
+    WeekNumber: int
+    Weekday: int
+    Status: str
+    DormID: int
