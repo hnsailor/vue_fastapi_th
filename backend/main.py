@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from api.api import api_router
 
@@ -8,6 +9,19 @@ app = FastAPI(
 )
 
 app.include_router(api_router)
+
+# 允许跨域请求的设置
+origins = [
+    "http://localhost:5173",  # 这是您的前端开发服务器的地址，您可以根据需要进行修改
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def init_db():
